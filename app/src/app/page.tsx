@@ -15,6 +15,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
+import Stack from "@mui/material/Stack";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -41,14 +42,11 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-
 // icons
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-const drawerWidth = 64;
+const drawerWidth = 90;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -126,8 +124,8 @@ const PlaceCard = (props: PlaceCardProps) => {
   return (
     <div id={String(props.data.id)}>
       <Card sx={{ maxWidth: 400, height: 225 }}>
-        <CardActionArea>
-          <CardContent>
+        <CardContent>
+          <CardActionArea sx={{ pb: "11px" }}>
             <Box sx={{ display: "flex", gap: "16px" }}>
               <Box sx={{ display: "flex" }}>
                 <img
@@ -165,24 +163,27 @@ const PlaceCard = (props: PlaceCardProps) => {
                 </Box>
               </Box>
             </Box>
-
-            <ImageList
-              sx={{ width: 360, height: 120, overflow: "hidden" }}
-              cols={3}
-              rowHeight={120}
+          </CardActionArea>
+          <Box sx={{ overflow: "auto" }}>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={{ xs: 0, sm: 0, md: 1 }}
             >
               {props.data.images.map((item) => (
-                <ImageListItem key={item}>
+                <Box key={item} sx={{ display: "flex" }}>
                   <img
-                    srcSet={`${item}?w=120&h=120&fit=crop&dpr=2 2x`}
-                    src={`${item}?w=120&h=120&fit=crop`}
+                    width="120px"
+                    height="120px"
+                    style={{ objectFit: "cover" }}
+                    srcSet={`${item}?w=200&h=200&fit=crop&dpr=2 2x`}
+                    src={`${item}?w=200&h=200&fit=crop`}
                     loading="lazy"
                   />
-                </ImageListItem>
+                </Box>
               ))}
-            </ImageList>
-          </CardContent>
-        </CardActionArea>
+            </Stack>
+          </Box>
+        </CardContent>
       </Card>
     </div>
   );
@@ -209,6 +210,7 @@ export default function page() {
       <Drawer
         variant="permanent"
         sx={{
+          bgcolor: "black",
           width: "90px",
           flexShrink: 0,
           whiteSpace: "nowrap",
@@ -247,34 +249,6 @@ export default function page() {
             </Box>
           </Toolbar>
         </AppBar>
-
-        <Divider />
-        <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
@@ -289,7 +263,7 @@ export default function page() {
               >
                 <MenuItem value={1}>Restuarant</MenuItem>
                 <MenuItem value={2}>Cafe</MenuItem>
-                <MenuItem value={3}>Hotel</MenuItem>
+                <MenuItem value={3}>Bakery</MenuItem>
               </Select>
               <TextField
                 id="standard-textarea"
